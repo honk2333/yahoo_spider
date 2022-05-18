@@ -1,0 +1,51 @@
+{
+    "url": "https://sports.yahoo.com/site/api/resource",
+    "raw_url": "https://sports.yahoo.com/site/api/resource?bkt=sp_mab_personalized_odds_cntrl%2CJARVISSPORTSDESKSPEOL04&crumb=L%2FyDE8AF9QD&device=desktop&ecma=modern&feature=article2_csn%2CcanvassOffnet%2CenableCMP%2CenableConsentData%2CenableYBarFavTeams%2Csp-nav-test%2CoathPlayer%2CenableCCPAFooter%2CenableReconsent%2CshowFutures%2CenableUserService%2CdisableCommentsMessage%2CenableLGPD%2Cwatchtogether%2CenableXrayNcp%2CenableXrayPeopleSportsEntities%2CenableXrayTeamEntities%2CenableXrayTopicEntities%2CenableAdlite%2CenableAdLiteUpSellFeedback%2CenableLeagueDraftOdds%2CenableLeagueFutures%2CenableLeagueProps%2CenableMonalixa3pBodySlot%2CenableMonalixaBodySlot%2CenableMonalixaPlacements%2CenableMonalixaYBarUpsell%2CenableXrayAthleteHeaderV2%2CenableXrayNcpV2SalienceMerge%2Clivecoverage%2CnewContentAttribution%2CcaasSmartphone%2Ccanvass%2CdesktopNotifications%2CsearchAssist%2Clicensed-only%2CdfsFavoriteTeamPromo%2CenableOlyAthletePage%2CenableGameDriveOdds%2CyahooDayOne%2CplayerNews%2CenableMonalixaNcaabBanner%2CnewLogo%2CsponsoredAds&intl=us&lang=en-US&partner=none&prid=9dts17th89rnu&region=US&site=sports&tz=Asia%2FSingapore&ver=1.0.9127",
+    "method": "post",
+    "cookies": {
+        "A1": "d=AQABBKdthGICEK8hBlDgI5CT3Y34fV-twi4FEgEBAQG_hWKOYgAAAAAA_eMAAA&S=AQAAAlMbDCLi9tFu0fR38Z_nXHE",
+        "A3": "d=AQABBKdthGICEK8hBlDgI5CT3Y34fV-twi4FEgEBAQG_hWKOYgAAAAAA_eMAAA&S=AQAAAlMbDCLi9tFu0fR38Z_nXHE",
+        "A1S": "d=AQABBKdthGICEK8hBlDgI5CT3Y34fV-twi4FEgEBAQG_hWKOYgAAAAAA_eMAAA&S=AQAAAlMbDCLi9tFu0fR38Z_nXHE&j=WORLD",
+        "GUC": "AQEBAQFihb9ijkIhKQSZ",
+        "thamba": "2",
+        "cmp": "t=1652875774&j=0&u=1---",
+        "maex": "%7B%22993a4214%22%3A1652876437%2C%22eafaf0a6%22%3A1652876437%2C%22ffceaa6a%22%3A1652879103%7D",
+        "_dd_s": "logs=1&id=2e8c630a-c75e-44ee-9f99-ac15da3d7828&created=1652877844731&expire=1652880074999"
+    },
+    "headers": {
+        "authority": "sports.yahoo.com",
+        "accept": "*/*",
+        "accept-language": "zh-CN,zh;q=0.9",
+        "content-type": "application/json",
+        "cookie": "A1=d=AQABBKdthGICEK8hBlDgI5CT3Y34fV-twi4FEgEBAQG_hWKOYgAAAAAA_eMAAA&S=AQAAAlMbDCLi9tFu0fR38Z_nXHE; A3=d=AQABBKdthGICEK8hBlDgI5CT3Y34fV-twi4FEgEBAQG_hWKOYgAAAAAA_eMAAA&S=AQAAAlMbDCLi9tFu0fR38Z_nXHE; A1S=d=AQABBKdthGICEK8hBlDgI5CT3Y34fV-twi4FEgEBAQG_hWKOYgAAAAAA_eMAAA&S=AQAAAlMbDCLi9tFu0fR38Z_nXHE&j=WORLD; GUC=AQEBAQFihb9ijkIhKQSZ; thamba=2; cmp=t=1652875774&j=0&u=1---; maex=%7B%22993a4214%22%3A1652876437%2C%22eafaf0a6%22%3A1652876437%2C%22ffceaa6a%22%3A1652879103%7D; _dd_s=logs=1&id=2e8c630a-c75e-44ee-9f99-ac15da3d7828&created=1652877844731&expire=1652880074999",
+        "origin": "https://sports.yahoo.com",
+        "referer": "https://sports.yahoo.com/sportsbook/",
+        "sec-ch-ua": "\" Not A;Brand\";v=\"99\", \"Chromium\";v=\"101\", \"Google Chrome\";v=\"101\"",
+        "sec-ch-ua-mobile": "?0",
+        "sec-ch-ua-platform": "\"Windows\"",
+        "sec-fetch-dest": "empty",
+        "sec-fetch-mode": "cors",
+        "sec-fetch-site": "same-origin",
+        "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/101.0.4951.67 Safari/537.36",
+        "x-requested-with": "XMLHttpRequest",
+        "x-webp": "1"
+    },
+    "queries": {
+        "bkt": "sp_mab_personalized_odds_cntrl,JARVISSPORTSDESKSPEOL04",
+        "crumb": "L/yDE8AF9QD",
+        "device": "desktop",
+        "ecma": "modern",
+        "feature": "article2_csn,canvassOffnet,enableCMP,enableConsentData,enableYBarFavTeams,sp-nav-test,oathPlayer,enableCCPAFooter,enableReconsent,showFutures,enableUserService,disableCommentsMessage,enableLGPD,watchtogether,enableXrayNcp,enableXrayPeopleSportsEntities,enableXrayTeamEntities,enableXrayTopicEntities,enableAdlite,enableAdLiteUpSellFeedback,enableLeagueDraftOdds,enableLeagueFutures,enableLeagueProps,enableMonalixa3pBodySlot,enableMonalixaBodySlot,enableMonalixaPlacements,enableMonalixaYBarUpsell,enableXrayAthleteHeaderV2,enableXrayNcpV2SalienceMerge,livecoverage,newContentAttribution,caasSmartphone,canvass,desktopNotifications,searchAssist,licensed-only,dfsFavoriteTeamPromo,enableOlyAthletePage,enableGameDriveOdds,yahooDayOne,playerNews,enableMonalixaNcaabBanner,newLogo,sponsoredAds",
+        "intl": "us",
+        "lang": "en-US",
+        "partner": "none",
+        "prid": "9dts17th89rnu",
+        "region": "US",
+        "site": "sports",
+        "tz": "Asia/Singapore",
+        "ver": "1.0.9127"
+    },
+    "data": {
+        "{\"requests\":{\"g0\":{\"resource\":\"SportsStreamService\",\"operation\":\"read\",\"params\":{\"ui\":{\"comments_offnet\":true,\"editorial_featured_count\":1,\"image_quality_override\":true,\"link_out_allowed\":true,\"needtoknow_template\":\"carousel\",\"ntk_bypassA3c\":true,\"pubtime_maxage\":21600,\"relative_links\":true,\"smart_crop\":true,\"storyline_count\":2,\"storyline_enabled\":true,\"storyline_min\":2,\"summary\":true,\"thumbnail_size\":100,\"view\":\"mega\",\"editorial_content_count\":19,\"editorial_content_min\":0,\"finance_upsell_threshold\":4,\"roundup\":true,\"sports_morelink_enabled\":true},\"category\":\"LISTID:a0278080-4dee-11ea-a7ff-74d7f68f855d\",\"forceJpg\":true,\"releasesParams\":{\"limit\":20,\"offset\":0},\"ncpParams\":{\"query\":{\"mabEnabled\":true,\"mabContentEnabled\":true,\"configId\":\"non-personalized\",\"namespace\":\"sports\",\"id\":\"ntk-assetlist-stream\"},\"body\":{\"gqlVariables\":{\"main\":{\"pagination\":{\"requestedCount\":10,\"contentOverrides\":{\"8ed77fe5-6665-3066-b04d-13d155cc48e6\":{\"list\":\"a0278080-4dee-11ea-a7ff-74d7f68f855d\"},\"92b55f8f-f377-4595-80f6-510121c61932\":{\"list\":\"a0278080-4dee-11ea-a7ff-74d7f68f855d\"},\"afe1b096-3ef0-4cc8-9eba-47059df2c975\":{\"list\":\"a0278080-4dee-11ea-a7ff-74d7f68f855d\"},\"55885296-dfd8-4457-a3fc-822a682b6881\":{\"list\":\"a0278080-4dee-11ea-a7ff-74d7f68f855d\"},\"3833777d-de52-45cb-9ffc-154b0ba85d84\":{\"list\":\"a0278080-4dee-11ea-a7ff-74d7f68f855d\"},\"90df9f92-ae80-49f0-aff1-9cfe308a4105\":{\"list\":\"a0278080-4dee-11ea-a7ff-74d7f68f855d\"},\"97eabc5b-b4f4-48f8-bfc6-dc08314b8012\":{\"list\":\"a0278080-4dee-11ea-a7ff-74d7f68f855d\"},\"d1f7ec21-6cea-3d4f-b188-07fba2cd8067\":{\"list\":\"a0278080-4dee-11ea-a7ff-74d7f68f855d\"},\"8ca66e10-166e-420f-a633-44fe91aeaf39\":{\"list\":\"a0278080-4dee-11ea-a7ff-74d7f68f855d\"},\"8d87bb54-44e7-3ec3-8abc-aad191f33af5\":{\"list\":\"a0278080-4dee-11ea-a7ff-74d7f68f855d\"}},\"remainingCount\":10,\"uuids\":\"92b55f8f-f377-4595-80f6-510121c61932:STORY,3833777d-de52-45cb-9ffc-154b0ba85d84:STORY,90df9f92-ae80-49f0-aff1-9cfe308a4105:STORY,d1f7ec21-6cea-3d4f-b188-07fba2cd8067:VIDEO,97eabc5b-b4f4-48f8-bfc6-dc08314b8012:STORY,8ca66e10-166e-420f-a633-44fe91aeaf39:STORY,8ed77fe5-6665-3066-b04d-13d155cc48e6:VIDEO,8d87bb54-44e7-3ec3-8abc-aad191f33af5:VIDEO,afe1b096-3ef0-4cc8-9eba-47059df2c975:STORY,55885296-dfd8-4457-a3fc-822a682b6881:STORY\"}}}}},\"ncpRequests\":{\"RELATED\":{\"query\":{\"namespace\":\"media\",\"id\":\"related-content-stream\",\"version\":\"v1\",\"configId\":\"contentsim-rc\"}}},\"offnet\":{\"include_lcp\":true,\"use_preview\":true},\"ss_timeout\":600,\"useNCP\":true,\"ads\":{\"ad_polices\":true,\"cluster\":true,\"contentType\":\"video/mp4,application/x-shockwave-flash,application/vnd.apple.mpegurl\",\"count\":25,\"enableFlashSale\":true,\"enableGeminiDealsWithoutBackground\":true,\"frequency\":4,\"geminiPromotionsEnabled\":true,\"generic_viewability\":true,\"inline_video\":true,\"partial_viewability\":true,\"pu\":\"sports.yahoo.com\",\"se\":5668476,\"spaceid\":\"1197810726\",\"start_index\":1,\"timeout\":0,\"type\":\"STRM,STRM_CONTENT,STRM_VIDEO\",\"useHqImg\":true,\"useResizedImages\":true},\"batches\":{\"pagination\":true,\"size\":10,\"timeout\":1000,\"total\":120},\"enableAuthorBio\":true,\"max_exclude\":0,\"min_count\":3,\"no_ss_pnr_ntk\":true,\"pnr_package_enabled\":true,\"service\":{\"specRetry\":{\"enabled\":true,\"triggerDelayPct\":30,\"throttleRate\":100}},\"subsite\":\"betting\",\"sponsoredMomentsAd\":{\"queryParams\":{\"smGeminiCluster\":false,\"smAdBlendInGemini\":true},\"where\":{\"sm_ads_count\":1,\"sm_ads_enabled\":false,\"sm_ads_image_tag\":\"img:720x1280\",\"sm_ads_pu\":\"www.yahoo.com\",\"sm_ads_se\":5661938,\"sm_reg_ads_start_index\":1,\"sm_ads_start_index\":1,\"sm_ads_type\":\"STRM,STRM_VIDEO\"}},\"pageContext\":{\"pageType\":\"utility\",\"league\":\"sportsbook\",\"subPageType\":\"home\"},\"content_type\":\"sportsbook\"}}},\"context\":{\"feature\":\"article2_csn,canvassOffnet,enableCMP,enableConsentData,enableYBarFavTeams,sp-nav-test,oathPlayer,enableCCPAFooter,enableReconsent,showFutures,enableUserService,disableCommentsMessage,enableLGPD,watchtogether,enableXrayNcp,enableXrayPeopleSportsEntities,enableXrayTeamEntities,enableXrayTopicEntities,enableAdlite,enableAdLiteUpSellFeedback,enableLeagueDraftOdds,enableLeagueFutures,enableLeagueProps,enableMonalixa3pBodySlot,enableMonalixaBodySlot,enableMonalixaPlacements,enableMonalixaYBarUpsell,enableXrayAthleteHeaderV2,enableXrayNcpV2SalienceMerge,livecoverage,newContentAttribution,caasSmartphone,canvass,desktopNotifications,searchAssist,licensed-only,dfsFavoriteTeamPromo,enableOlyAthletePage,enableGameDriveOdds,yahooDayOne,playerNews,enableMonalixaNcaabBanner,newLogo,sponsoredAds\",\"bkt\":[\"sp_mab_personalized_odds_cntrl\",\"JARVISSPORTSDESKSPEOL04\"],\"crumb\":\"L/yDE8AF9QD\",\"device\":\"desktop\",\"intl\":\"us\",\"lang\":\"en-US\",\"partner\":\"none\",\"prid\":\"9dts17th89rnu\",\"region\":\"US\",\"site\":\"sports\",\"tz\":\"Asia/Singapore\",\"ver\":\"1.0.9127\",\"ecma\":\"modern\"}}": ""
+    }
+}
