@@ -46,7 +46,7 @@ params = {
     'prid': '750068ph894ju',
     'region': 'US',
     'site': 'sports',
-    'tz': 'Asia/Japan',
+    'tz': 'Asia/Taiwan',
     'ver': '1.0.9127',
 }
 
@@ -212,7 +212,7 @@ json_data = {
         'prid': '750068ph894ju',
         'region': 'US',
         'site': 'sports',
-        'tz': 'Asia/Japan',
+        'tz': 'Europe/Finance',
         'ver': '1.0.9127',
         'ecma': 'modern',
     },
@@ -223,13 +223,13 @@ proxies = {'http': '114.212.85.117:808', 'https': '114.212.85.117:808'}
 
 
 
-iter = 1
+iter = 3
 for i in range(iter):
     records = json.load(open('./yahoo_sports.json','r'))
     print('当前总新闻数',len(records))
     tmp = {}
     response = requests.post('https://sports.yahoo.com/site/api/resource',proxies=proxies, params=params,  headers=headers, json=json_data)
-    print(response.json())
+    # print(response.json())
     res = response.json()
     items = res['g0']['data']['stream_items']
     print('爬取：', len(items))
