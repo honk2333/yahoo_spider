@@ -41,7 +41,13 @@ def yahoo_sports():
                 id = item['id']
                 if item['categoryLabel'] != 'Sports':
                     continue
-                record = {'title':item['title'], 'summary':item['summary'], 'url':item['url'], 'category':item['categoryLabel'], 'image':item['images'][list(item['images'].keys())[-1]] }
+                record = {
+                    'title':item['title'], 
+                    'summary':item['summary'], 
+                    'url':item['url'], 
+                    'category':item['categoryLabel'], 
+                    'image':item['images'][list(item['images'].keys())[-1]] 
+                    }
                 tmp.update({id:record})
             except:
                 continue
@@ -104,8 +110,8 @@ def ny_sports():
     proxies = {'http': '114.212.85.117:808', 'https': '114.212.85.117:808'}
 
     # 从数据源读取文件
-    # records = json.load(open('./yahoo_sports.json','r'))
-    records = {}
+    records = json.load(open('./ny_sports.json','r'))
+    # records = {}
     print('当前总新闻数',len(records))
     response = requests.post('https://samizdat-graphql.nytimes.com/graphql/v2',proxies=proxies, headers=headers, json=json_data)
     res =response.json()
@@ -122,14 +128,20 @@ def ny_sports():
         # print(item['promotionalMedia']['crops'][2]['renditions'][2])
         image_info = item['promotionalMedia']['crops'][2]['renditions'][2]
         assert image_info['name'] == 'mediumThreeByTwo440'
-        record = {'title':item['headline']['default'], 'summary':item['summary'], 'url':item['url'], 'category':'Sports', 'image':{'height':image_info['height'],'width':image_info['width'],'url':image_info['url']} }
+        record = {
+            'title':item['headline']['default'], 
+            'summary':item['summary'], 
+            'url':item['url'], 
+            'category':'Sports', 
+            'image':{'height':image_info['height'],'width':image_info['width'],'url':image_info['url']} 
+            }
         tmp.update({id:record})
       
     # time.sleep(10)
     print('过滤后得到的：', len(tmp.keys()))
     records.update(tmp)
     print('更新后总新闻数：', len(records))
-    json.dump(records, open('./yahoo_sports.json','w'))
+    json.dump(records, open('./ny_sports.json','w'))
     print('-'*30)
 
 
