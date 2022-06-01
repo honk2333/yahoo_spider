@@ -60,7 +60,9 @@ def nytimes_news(year, month):
         # id += 1
     records.update(tmp)
     print('更新后总新闻数：', len(records))
-    json.dump(records, open('./ny_news.json','w'))
+    json.dump(records, open('./nytimes_news/nytimes_news.json','w'))
 
 if __name__ == '__main__':
-    nytimes_news(2019,2)
+    year = 2022
+    for month in range(1,6):
+        nytimes_news(year,month)
