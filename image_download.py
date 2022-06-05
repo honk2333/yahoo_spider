@@ -23,6 +23,6 @@ if __name__ == '__main__':
     news = json.load(open(path,'r'))
     path = '/home/wanghk/Extractor/nytimes_news_ner_elmo.json'
     entity = json.load(open(path,'r'))
-
+    print(len(entity))
+    print(len([ v for k,v in entity.items() if v['num']==1 ]))
     Parallel(n_jobs=1)(delayed(down_url)(news, k, v) for k,v in tqdm(entity.items()) )
-            
