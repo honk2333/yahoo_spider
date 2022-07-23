@@ -4,7 +4,9 @@ import random
 import time
 import json
 from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
 from tqdm import tqdm
+import os
 
 def get_film_list():
     proxies = {
@@ -29,90 +31,112 @@ def get_film_list():
 
 class Crawler_google_images:
     # 初始化
-    def __init__(self):
-        self.url = url
+    # def __init__(self):
+        # self.url = url
 
     # 获得Chrome驱动，并访问url
     def init_browser(self):
-        chrome_options = webdriver.ChromeOptions()
-        chrome_options.add_argument("--disable-infobars")
-        browser = webdriver.Chrome(chrome_options=chrome_options)
-        # 访问url
-        browser.get(self.url)
-        # 最大化窗口，之后需要爬取窗口中所见的所有图片
-        browser.maximize_window()
-        return browser
+        webdriver_path = 'C:\Program Files\Google\Chrome\Application\chromedriver.exe'
+        chrome_options = Options()
+        chrome_options.add_argument('--headless')
+        chrome_options.add_argument('window-size=1920x720')
+        chrome_options.add_argument('--disable-gpu')
+        chrome_options.add_argument('--start-maximized')
+        browser = webdriver.Chrome(webdriver_path,chrome_options = chrome_options)
+
+        # chrome_options = webdriver.ChromeOptions()
+        # chrome_options.add_argument("--disable-infobars")
+        # browser = webdriver.Chrome(chrome_options=chrome_options)
+
+        self.browser = browser
+        return
 
     # 下载图片
-    def download_images(self, browser, num=100):
+    def download_images(self, name, num=100):
+        keyword = name + ' movie'
+        url = 'https://www.google.com.hk/search?q=' + keyword + '&source=lnms&tbm=isch'
+        self.url = url
+        
+
         #存储路径
-        picpath = './cat'
+        picpath = './selector/'+ name.replace(' ','_')
         # 路径不存在时创建一个
-        if not os.path.exists(picpath): os.makedirs(picpath)
+        if not os.path.exists(picpath): 
+            os.makedirs(picpath)
+        else:
+            return
+
+        # 访问url
+        self.browser.get(self.url)
+        # 最大化窗口，之后需要爬取窗口中所见的所有图片
+        # browser.maximize_window()
+    
 
         count = 0  # 图片序号
         pos = 0
         # print(num)
 
-        while (True):
-            try:
-                # 向下滑动
-                js = 'var q=document.documentElement.scrollTop=' + str(pos)
-                pos += 500
-                browser.execute_script(js)
-                time.sleep(1)
-                # 找到图片
-                # html = browser.page_source#也可以抓取当前页面的html文本，然后用beautifulsoup来抓取
-                # 直接通过tag_name来抓取是最简单的，比较方便
-                img_elements = browser.find_elements_by_xpath('//a[@class="wXeWr islib nfEiy mM5pbd"]')
-                try:
-                    for img_element in img_elements:
-                        #点开大图页面
-                        img_element.click()
-                        time.sleep(0.5)
-                        try:
-                            # 这里balabala里面有好几个，所以要过滤一下
-                            # 取名好烦哦···
-                            balabalas = browser.find_elements_by_xpath('//img[@class="n3VNCb"]')
-
-                            if (balabalas):
-                                for balabala in balabalas:
-                                    src = balabala.get_attribute('src')
-                                    #过滤掉缩略图和无关干扰信息
-                                    if src.startswith('http') and not src.startswith(
-                                            'https://encrypted-tbn0.gstatic.com'):
-                                        print('Found' + str(count) + 'st image url')
-                                        # img_url_dic.append(src)
-                                        self.save_img(count, src, picpath)
-                                        count += 1
-                                        #爬取到指定数量图片后退出
-                                        if (count >= num):
-                                            return "stop"
-                        except:
-                            print('获取图片失败')
-
-                    #回退
-                    browser.back()
-                    time.sleep(0.3)
-                except:
-                    print('获取页面失败')
-            except:
-                print("划不动了")
+        # while (True):
+        
+        # 向下滑动
+        js = 'var q=document.documentElement.scrollTop=' + str(pos)
+        pos += 500
+        self.browser.execute_script(js)
+        time.sleep(2)
+        # 找到图片
+        # html = self.browser.page_source#也可以抓取当前页面的html文本，然后用beautifulsoup来抓取
+        # 直接通过tag_name来抓取是最简单的，比较方便
+        img_elements = self.browser.find_elements_by_xpath('//*[@id="islrg"]/div[1]/div/a[1]/div[1]')
+        print(len(img_elements))
+        
+        for img_element in img_elements:
+            #点开大图页面
+            img_element.click()
+            time.sleep(1)
+            
+            # 这里balabala里面有好几个，所以要过滤一下
+            # 取名好烦哦···
+            balabalas = self.browser.find_elements_by_xpath('//img[@class="n3VNCb KAlRDb"]')
+            print(len(balabalas))
+            if (balabalas):
+                for balabala in balabalas:
+                    src = balabala.get_attribute('src')
+                    #过滤掉缩略图和无关干扰信息
+                    # if src.startswith('http') and not src.startswith(
+                    #         'https://encrypted-tbn0.gstatic.com'):
+                    # print('Found' + str(count) + 'st image url')
+                    # img_url_dic.append(src)
+                    print(src, picpath)
+                    self.save_img(count, src, picpath)
+                    count += 1
+                    #爬取到指定数量图片后退出
+                    if (count >= num):
+                        return "stop"
+                
+            #回退
+            self.browser.back()
+            time.sleep(0.3)
+        
 
     def save_img(self, count, img_src, picpath):
         filename = picpath + '/' + str(count) + '.jpg'
-        r = requests.get(img_src)
-        with open(filename, 'wb') as f:
-            f.write(r.content)
-        f.close()
-
-    def run(self):
-        self.__init__()
-        browser = self.init_browser()
-        self.download_images(browser, 100)  # 可以修改爬取的图片数
-        browser.close()
-        print("############爬取完成")
-
+        print(filename)
+        proxies = {'http':'127.0.0.1:1080',
+        'https':'127.0.0.1:1080'
+        }
+        count = 0
+        while count < 3:
+            try:
+                r = requests.get(img_src, proxies=proxies)
+                if res.status == 200:
+                    with open(filename, 'wb') as f:
+                        f.write(r.content)
+                    break
+                else:
+                    count += 1
+            except:
+                count += 1
+        return 
 
 def get_actorimgs():
     with open('./selector/film_list','r') as f:
@@ -133,6 +157,8 @@ def get_actorimgs():
         'https':'114.212.85.117:808'
     }
     actorimgs = {}
+    craw = Crawler_google_images()
+    craw.init_browser()
     # actorimgs = json.load(open('./selector/actor_url.json','r'))
     for line in tqdm(contents):
         actors = line.split('\t')[1].split(',')[1:]
@@ -146,8 +172,8 @@ def get_actorimgs():
             keyword = actor + ' movie'
             url = 'https://www.google.com.hk/search?q=' + keyword + '&source=lnms&tbm=isch'
             actorimgs[actor] = []
-            craw = Crawler_google_images(url)
-            craw.run()       
+            
+            craw.download_images(actor, 15)  # 可以修改爬取的图片数       
 
 
             def requests_spider():
