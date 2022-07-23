@@ -62,7 +62,36 @@ def nytimes_news(year, month):
     print('更新后总新闻数：', len(records))
     json.dump(records, open('./nytimes_news/nytimes_news.json','w'))
 
+
+def nytimes_new_2():
+    json_list = os.listdir('./nytimes_news')
+    json_list = [ f for f in json_list if f[:2]='20']
+    print(len(json_list))
+    records = {}
+    for f in json_list:
+        data = json.load(open(os.path.join('./nytimes_news', f),'r'))
+        articles = data['response']['docs']
+        print(len(articles))
+        for article in articles:
+            if article['type_of_material'] != 'News':
+                continue
+            if len(article['multimedia']) == 0 :
+                continue
+            id = article['_id']
+            record = {
+                    'title':article['headline']['print_headline'] if len(article['headline']['print_headline'])>len(article['headline']['main']) else article['headline']['main'], 
+                    'summary': article['abstract'],
+                    'url':article['web_url'], 
+                    'category': article['section_name'], 
+                    'image':{'heigh':article['multimedia'][2]['height'],'width':article['multimedia'][2]['width'],'url':'https://www.nytimes.com/'+article['multimedia'][2]['url']} 
+                    }
+            records.update({id:record})
+    print(len(records))
+    json.dump(records, open('./nytimes_news2.json','w'))
+
+
 if __name__ == '__main__':
-    year = 2022
-    for month in range(1,6):
-        nytimes_news(year,month)
+    # year = 2022
+    # for month in range(1,6):
+    #     nytimes_news(year,month)
+    nytimes_new_2()

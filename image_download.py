@@ -18,7 +18,7 @@ def down_url(param = ()):
     except:
         return
 
-if __name__ == '__main__':
+def download__from_json():
     path = '/home/wanghk/Extractor/spider/google/google_sports.json'
     news = json.load(open(path,'r'))
     # print(len(news))
@@ -35,3 +35,16 @@ if __name__ == '__main__':
     multi_results = multi_result.get()
     # _ = list(map(caption_dic.update, multi_results))
     # json.dump(caption_dic,open('./mega/googlesearch.json','w'))
+
+
+def download_from_dir():
+    json_path = '/home/wanghk/Extractor/googlesearch/nytimes/googlesearch.json'
+    # googsearch = json.load(open(json_path, 'r'))
+    path = '/home/wanghk/08'
+    files = os.listdir(path)
+    for f in files:
+
+
+
+if __name__ == '__main__':
+    
