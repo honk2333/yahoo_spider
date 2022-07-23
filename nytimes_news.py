@@ -65,7 +65,7 @@ def nytimes_news(year, month):
 
 def nytimes_new_2():
     json_list = os.listdir('./nytimes_news')
-    json_list = [ f for f in json_list if f[:2]='20']
+    json_list = [ f for f in json_list if f[:2]=='20']
     print(len(json_list))
     records = {}
     for f in json_list:
@@ -78,14 +78,17 @@ def nytimes_new_2():
             if len(article['multimedia']) == 0 :
                 continue
             id = article['_id']
-            record = {
-                    'title':article['headline']['print_headline'] if len(article['headline']['print_headline'])>len(article['headline']['main']) else article['headline']['main'], 
-                    'summary': article['abstract'],
-                    'url':article['web_url'], 
-                    'category': article['section_name'], 
-                    'image':{'heigh':article['multimedia'][2]['height'],'width':article['multimedia'][2]['width'],'url':'https://www.nytimes.com/'+article['multimedia'][2]['url']} 
-                    }
-            records.update({id:record})
+            try:
+                record = {
+                        'title':article['headline']['print_headline'] if len(article['headline']['print_headline'])>len(article['headline']['main']) else article['headline']['main'], 
+                        'summary': article['abstract'],
+                        'url':article['web_url'], 
+                        'category': article['section_name'], 
+                        'image':{'heigh':article['multimedia'][2]['height'],'width':article['multimedia'][2]['width'],'url':'https://www.nytimes.com/'+article['multimedia'][2]['url']} 
+                        }
+                records.update({id:record})
+            except:
+                continue
     print(len(records))
     json.dump(records, open('./nytimes_news2.json','w'))
 

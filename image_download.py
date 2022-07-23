@@ -10,7 +10,7 @@ def down_url(param = ()):
     content, k = param
     url = content['image']['url']
     target_name = k.split('/')[-1]+'.jpg'
-    path = os.path.join('/home/wanghk/Extractor/spider/google/images', target_name)
+    path = os.path.join('/home/wanghk/Extractor/spider/nytimes_news/superJumbo', target_name)
     if os.path.exists(path):
         return
     try:
@@ -38,13 +38,23 @@ def download__from_json():
 
 
 def download_from_dir():
-    json_path = '/home/wanghk/Extractor/googlesearch/nytimes/googlesearch.json'
-    # googsearch = json.load(open(json_path, 'r'))
+    json_path = '/home/wanghk/Extractor/spider/nytimes_news/nytimes_news2.json'
+    all_news = json.load(open(json_path, 'r'))
+    print(len(all_news))
+    print(list(all_news.keys())[:10])
     path = '/home/wanghk/08'
     files = os.listdir(path)
-    for f in files:
+    news = {f[:-4]:all_news['nyt://article/'+f[:-4]] for f in files}
+    params = { k:v for k,v in news.items()}
+    # print(params)
+    print(len(params))
+    # Parallel(n_jobs=1)(delayed(down_url)(news, k, v) for k,v in tqdm(entity.items()) )
+    thread_num = 8
+    pool = multiprocessing.Pool(thread_num)
+    multi_result = pool.map_async(down_url, [ (news[k],k) for k,v in params.items() ] )
+    multi_results = multi_result.get()
 
 
 
 if __name__ == '__main__':
-    
+    download_from_dir()
