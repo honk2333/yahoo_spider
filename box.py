@@ -45,7 +45,7 @@ from tkinter.messagebox import askyesno
 # 定义标注窗口的默认名称
 WINDOW_NAME = 'Simple Bounding Box Labeling Tool'
 # 定义画面刷新帧率
-FPS = 24
+FPS = 3
 # 定义支持的图像格式
 SUPPORTED_FORMATS = ['jpg', 'jpeg', 'png']
 # 定义默认物体框的名字为Object，颜色为蓝色，当没有用户自定义物体时，使用该物体
@@ -55,15 +55,18 @@ COLOR_GRAY = (192, 192, 192)
 # 在图像下方多处BAR_HEIGHT的区域，用于显示信息
 BAR_HEIGHT = 16
 # 上下左右,DELETE键对应的cv2.waitKey()函数的返回值
-KEY_UP = 2490368
-KEY_DOWN = 2621440
-KEY_LEFT = 2424832
-KEY_RIGHT = 2555904
-KEY_DELETE = 3014656
+KEY_UP = 119
+KEY_DOWN = 115
+KEY_LEFT = 97
+KEY_RIGHT = 100
+KEY_DELETE = 255
+KEY_EXIT = 27 
 # 空键用于默认循环
 KEY_EMPTY = 0
-get_bbox_name = '{}.bbox'.format
-
+get_bbox_name = 'bbox/{}.bbox'.format
+# def get_bbox_name(x):
+#     print('/bbox' + x[x.rfind('/'):] + '.bbox')
+#     return '/bbox' + x[x.rfind('/'):] + '.bbox'
 
 # 定义物体框标注工具类
 class SimpleBBoxLabeling:
@@ -90,7 +93,8 @@ class SimpleBBoxLabeling:
         # print(len(os.listdir(self._data_dir)))
         imagefiles = [x for x in os.listdir(self._data_dir) if x[x.rfind('.') + 1:].lower() in SUPPORTED_FORMATS]
         # print(len(imagefiles))
-        labeled = [x for x in imagefiles if os.path.exists(get_bbox_name(x))]
+        labeled = [x for x in imagefiles if os.path.exists(os.path.join(self._data_dir, get_bbox_name(x)))]
+        print(labeled)
         to_be_labeled = [x for x in imagefiles if x not in labeled]
 
         # 每次打开一个文件夹，都自动从还未标注的第一张开始
@@ -114,7 +118,8 @@ class SimpleBBoxLabeling:
         elif event == cv2.EVENT_MOUSEMOVE:
             self._pt1 = (x, y)
         # 按下鼠标右键删除最近画好的框
-        elif event == cv2.EVENT_RBUTTONUP:
+        elif event == cv2.EVENT_MBUTTONUP:
+            # print(self._bboxes)
             if self._bboxes:
                 self._bboxes.pop()
 
@@ -238,7 +243,7 @@ class SimpleBBoxLabeling:
         delay = int(1000 / FPS)
 
         # 只要没有按下Delete键，就持续循环
-        while key != KEY_DELETE:
+        while key != KEY_EXIT:
             # 上下方向键选择当前标注物体
             if key == KEY_UP:
                 if label_index == 0:
@@ -273,6 +278,7 @@ class SimpleBBoxLabeling:
                     continue
             # 如果键盘操作执行了换图片， 则重新读取， 更新图片
             # print(len(sel f._filelist))
+            # print(self._index)
             filename = self._filelist[self._index]
             if filename != last_filename:
                 filepath = os.sep.join([self._data_dir, filename])
@@ -283,12 +289,13 @@ class SimpleBBoxLabeling:
             canvas = self._draw_bbox(img)
             cv2.imshow(self.window_name, canvas)
             key = cv2.waitKey(delay)
+            # print(key)
             # 当前文件名就是下次循环的老文件名
             last_filename = filename
         print('Finished!')
         cv2.destroyAllWindows()
         #如果退出程序，需要对当前文件进行保存
-        self.export_bbox(os.sep.join([self._data_dir, get_bbox_name(filename)]), self._bboxes)
+        self.export_bbox(os.sep.join([os.path.join(self._data_dir,'bbox'), get_bbox_name(filename)]), self._bboxes)
         print('Labels updated!')         
 
 # tkinter是Python内置的简单GUI库，实现打开文件夹、确认删除等操作十分方便
@@ -296,7 +303,43 @@ from tkinter.filedialog import askdirectory
 # 导入创建的工具类
 # from SimpleBBoxLabeling import SimpleBBoxLabeling
 
+from PIL import Image
+ 
+def crop_imgs():
+    dir_with_images = './superJumbo/bbox'
+    bboxs = os.listdir(dir_with_images)
+    print(len(bboxs))
+    for bbox in bboxs:
+        print(bbox)
+        name = './superJumbo/'+bbox[:-5]
+        img = Image.open(name)
+        print(img.size)
+        bboxes = []
+        with open('./superJumbo/bbox/'+bbox, 'r') as f:
+            line = f.readline().rstrip()
+            while line:
+                bboxes.append(eval(line))
+                line = f.readline().rstrip()
+        # print(len(bboxes)
+        cnt = 0
+        for sites in bboxes:
+            print(sites[1])
+            cropped = img.crop((sites[1][0][0], sites[1][0][1], sites[1][1][0], sites[1][1][1]))  # (left, upper, right, lower)
+            cropped = cropped.convert('RGB')
+            cropped.save("./superJumbo/parts/" + bbox[:-9]+ '-part' + str(cnt)  + '.jpg')
+            cnt += 1
+
 if __name__ == '__main__':
-    dir_with_images = askdirectory(title='Where is the images?')
-    labeling_task = SimpleBBoxLabeling(dir_with_images)
-    labeling_task.start()
+    # dir_with_images = askdirectory(title='Where is the images?')
+    # dir_with_images = './superJumbo'
+    # labeling_task = SimpleBBoxLabeling(dir_with_images)
+    # labeling_task.start()
+
+    crop_imgs()
+    # test
+    # img = cv2.imread('/home/wanghk/code/yahoo_spider/superJumbo/9a5b4b12-f451-52d5-bf11-13a9d01dac6d.jpg')
+    # while(1):
+    #     cv2.imshow('img',img)
+    #     key = cv2.waitKey(20000)
+    #     print(key)
+    # cv2.destroyAllWindows()
