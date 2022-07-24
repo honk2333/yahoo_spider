@@ -42,6 +42,7 @@ import os
 import cv2
 # tkinter是Python内置的简单GUI库，实现打开文件夹、确认删除等操作十分方便
 from tkinter.messagebox import askyesno
+from tqdm import tqdm
 # 定义标注窗口的默认名称
 WINDOW_NAME = 'Simple Bounding Box Labeling Tool'
 # 定义画面刷新帧率
@@ -60,7 +61,7 @@ KEY_DOWN = 115
 KEY_LEFT = 97
 KEY_RIGHT = 100
 KEY_DELETE = 255
-KEY_EXIT = 27 
+KEY_EXIT = 27
 # 空键用于默认循环
 KEY_EMPTY = 0
 get_bbox_name = 'bbox/{}.bbox'.format
@@ -89,19 +90,21 @@ class SimpleBBoxLabeling:
         self.label_colors = DEFAULT_COLOR if not os.path.exists(label_path) else self.load_labels(label_path)
         # self.label_colors = self.load_labels(label_path)
         # 获取已经标注的文件列表和未标注的文件列表
-        # print(self._data_dir)
-        # print(len(os.listdir(self._data_dir)))
+        print(self._data_dir)
+        print(len(os.listdir(self._data_dir)))
         imagefiles = [x for x in os.listdir(self._data_dir) if x[x.rfind('.') + 1:].lower() in SUPPORTED_FORMATS]
-        # print(len(imagefiles))
-        labeled = [x for x in imagefiles if os.path.exists(os.path.join(self._data_dir, get_bbox_name(x)))]
-        print(labeled)
+        print(len(imagefiles))
+        labeled = [x for x in imagefiles if os.path.exists(os.path.join('./superJumbo', get_bbox_name(x)))]
+        print(len(labeled))
         to_be_labeled = [x for x in imagefiles if x not in labeled]
-
+        print(len(to_be_labeled))
         # 每次打开一个文件夹，都自动从还未标注的第一张开始
         self._filelist = labeled + to_be_labeled
         self._index = len(labeled)
         if self._index > len(self._filelist) - 1:
             self._index = len(self._filelist) - 1
+        print(self._index)
+        # exit(1)
 
     # 鼠标回调函数
     def _mouse_ops(self, event, x, y, flags, param):
@@ -238,7 +241,7 @@ class SimpleBBoxLabeling:
         cv2.namedWindow(self.window_name)
         cv2.setMouseCallback(self.window_name, self._mouse_ops)
         key = KEY_EMPTY
-
+        print(key)
         # 定义每次循环的持续时间
         delay = int(1000 / FPS)
 
@@ -277,9 +280,10 @@ class SimpleBBoxLabeling:
                     key = KEY_EMPTY
                     continue
             # 如果键盘操作执行了换图片， 则重新读取， 更新图片
-            # print(len(sel f._filelist))
-            # print(self._index)
+            print(len(self._filelist))
+            print(self._index)
             filename = self._filelist[self._index]
+            print(filename)
             if filename != last_filename:
                 filepath = os.sep.join([self._data_dir, filename])
                 img, self._bboxes = self.load_sample(filepath)
@@ -289,13 +293,13 @@ class SimpleBBoxLabeling:
             canvas = self._draw_bbox(img)
             cv2.imshow(self.window_name, canvas)
             key = cv2.waitKey(delay)
-            # print(key)
+            print('press:',key)
             # 当前文件名就是下次循环的老文件名
             last_filename = filename
         print('Finished!')
         cv2.destroyAllWindows()
         #如果退出程序，需要对当前文件进行保存
-        self.export_bbox(os.sep.join([os.path.join(self._data_dir,'bbox'), get_bbox_name(filename)]), self._bboxes)
+        self.export_bbox(os.sep.join([os.path.join('./superJumbo','bbox'), get_bbox_name(filename)]), self._bboxes)
         print('Labels updated!')         
 
 # tkinter是Python内置的简单GUI库，实现打开文件夹、确认删除等操作十分方便
@@ -309,9 +313,12 @@ def crop_imgs():
     dir_with_images = './superJumbo/bbox'
     bboxs = os.listdir(dir_with_images)
     print(len(bboxs))
-    for bbox in bboxs:
+    for bbox in tqdm(bboxs):
         print(bbox)
         name = './superJumbo/'+bbox[:-5]
+        if not os.path.exists(name):
+            os.remove(os.path.join('./superJumbo/bbox',bbox))
+            continue
         img = Image.open(name)
         print(img.size)
         bboxes = []
@@ -325,6 +332,7 @@ def crop_imgs():
         for sites in bboxes:
             print(sites[1])
             cropped = img.crop((sites[1][0][0], sites[1][0][1], sites[1][1][0], sites[1][1][1]))  # (left, upper, right, lower)
+            print(name)
             cropped = cropped.convert('RGB')
             cropped.save("./superJumbo/parts/" + bbox[:-9]+ '-part' + str(cnt)  + '.jpg')
             cnt += 1
@@ -336,10 +344,12 @@ if __name__ == '__main__':
     # labeling_task.start()
 
     crop_imgs()
+
     # test
     # img = cv2.imread('/home/wanghk/code/yahoo_spider/superJumbo/9a5b4b12-f451-52d5-bf11-13a9d01dac6d.jpg')
+    # img = cv2.imread('/home/ubuntu/MultiModal-Extractor/spider/superJumbo/imgs/9a5b4b12-f451-52d5-bf11-13a9d01dac6d.jpg')
     # while(1):
     #     cv2.imshow('img',img)
-    #     key = cv2.waitKey(20000)
+    #     key = cv2.waitKey(20)
     #     print(key)
     # cv2.destroyAllWindows()
