@@ -41,7 +41,7 @@ Delete键删除一种脏图片和对应的标注信息。
 import os
 import cv2
 # tkinter是Python内置的简单GUI库，实现打开文件夹、确认删除等操作十分方便
-from tkMessageBox import askyesno
+from tkinter.messagebox import askyesno
 # 定义标注窗口的默认名称
 WINDOW_NAME = 'Simple Bounding Box Labeling Tool'
 # 定义画面刷新帧率
@@ -49,11 +49,7 @@ FPS = 24
 # 定义支持的图像格式
 SUPPORTED_FORMATS = ['jpg', 'jpeg', 'png']
 # 定义默认物体框的名字为Object，颜色为蓝色，当没有用户自定义物体时，使用该物体
-DEFAULT_COLOR = {'per': (255, 0, 0),
-                'org': (0,255,0),
-                'loc': (0,0,255),
-                'misc': (255,255,255)
-}
+DEFAULT_COLOR = {'object': (255, 0, 0) }
 # 定义灰色，用于信息显示的背景和未定义物体框的显示
 COLOR_GRAY = (192, 192, 192)
 # 在图像下方多处BAR_HEIGHT的区域，用于显示信息
@@ -90,7 +86,10 @@ class SimpleBBoxLabeling:
         self.label_colors = DEFAULT_COLOR if not os.path.exists(label_path) else self.load_labels(label_path)
         # self.label_colors = self.load_labels(label_path)
         # 获取已经标注的文件列表和未标注的文件列表
+        # print(self._data_dir)
+        # print(len(os.listdir(self._data_dir)))
         imagefiles = [x for x in os.listdir(self._data_dir) if x[x.rfind('.') + 1:].lower() in SUPPORTED_FORMATS]
+        # print(len(imagefiles))
         labeled = [x for x in imagefiles if os.path.exists(get_bbox_name(x))]
         to_be_labeled = [x for x in imagefiles if x not in labeled]
 
@@ -184,7 +183,7 @@ class SimpleBBoxLabeling:
                 label, color = eval(line)
                 label_colors[label] = color
                 line = f.readline().rstrip()
-        print label_colors
+        print(label_colors)
         return label_colors
 
     # 读取图像文件和对应标注框信息（如果有的话）
@@ -225,7 +224,8 @@ class SimpleBBoxLabeling:
 
         # 所有标注物体名称的列表
         labels = self.label_colors.keys()
-
+        labels = [ label for label in labels]
+        print(labels)
         # 带标注物体的种类数
         n_labels = len(labels)
 
@@ -272,6 +272,7 @@ class SimpleBBoxLabeling:
                     key = KEY_EMPTY
                     continue
             # 如果键盘操作执行了换图片， 则重新读取， 更新图片
+            # print(len(sel f._filelist))
             filename = self._filelist[self._index]
             if filename != last_filename:
                 filepath = os.sep.join([self._data_dir, filename])
@@ -284,16 +285,16 @@ class SimpleBBoxLabeling:
             key = cv2.waitKey(delay)
             # 当前文件名就是下次循环的老文件名
             last_filename = filename
-        print 'Finished!'
+        print('Finished!')
         cv2.destroyAllWindows()
         #如果退出程序，需要对当前文件进行保存
         self.export_bbox(os.sep.join([self._data_dir, get_bbox_name(filename)]), self._bboxes)
-        print 'Labels updated!'         
+        print('Labels updated!')         
 
 # tkinter是Python内置的简单GUI库，实现打开文件夹、确认删除等操作十分方便
-# from tkFileDialog import askdirectory
+from tkinter.filedialog import askdirectory
 # 导入创建的工具类
-from SimpleBBoxLabeling import SimpleBBoxLabeling
+# from SimpleBBoxLabeling import SimpleBBoxLabeling
 
 if __name__ == '__main__':
     # dir_with_images = askdirectory(title='Where is the images?')
