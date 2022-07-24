@@ -296,6 +296,9 @@ class SimpleBBoxLabeling:
 from SimpleBBoxLabeling import SimpleBBoxLabeling
 
 if __name__ == '__main__':
-    dir_with_images = askdirectory(title='Where is the images?')
-    labeling_task = SimpleBBoxLabeling(dir_with_images)
-    labeling_task.start()
+    # dir_with_images = askdirectory(title='Where is the images?')
+    # labeling_task = SimpleBBoxLabeling(dir_with_images)
+    # labeling_task.start()
+    while(1):
+        key = cv2.waitKey(0)
+        print(key)
