@@ -10,7 +10,7 @@ def down_url(param = ()):
     content, k = param
     url = content['image']['url']
     target_name = k.split('/')[-1]+'.jpg'
-    path = os.path.join('/home/wanghk/Extractor/spider/nytimes_news/superJumbo', target_name)
+    path = os.path.join('/home/wanghk/Extractor/spider/nytimes_news/superJumbo/11', target_name)
     if os.path.exists(path):
         return
     try:
@@ -42,7 +42,7 @@ def download_from_dir():
     all_news = json.load(open(json_path, 'r'))
     print(len(all_news))
     print(list(all_news.keys())[:10])
-    path = '/home/wanghk/08'
+    path = '/home/wanghk/11'
     files = os.listdir(path)
     news = {f[:-4]:all_news['nyt://article/'+f[:-4]] for f in files}
     params = { k:v for k,v in news.items()}
