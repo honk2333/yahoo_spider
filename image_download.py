@@ -38,7 +38,7 @@ def download__from_json():
 
 
 def download_from_dir():
-    json_path = '/home/wanghk/Extractor/spider/nytimes_news/nytimes_news2.json'
+    json_path = '/home/ubuntu/MultiModal-Extractor/spider/nytimes_news/nytimes_news.json'
     all_news = json.load(open(json_path, 'r'))
     print(len(all_news))
     print(list(all_news.keys())[:10])

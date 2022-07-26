@@ -4,3 +4,6 @@ images/
 *.jpg
 *.html
 superJumbo/
+filtered/
+datasets/
+tmp/
