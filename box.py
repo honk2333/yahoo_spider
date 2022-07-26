@@ -46,7 +46,7 @@ from tqdm import tqdm
 # 定义标注窗口的默认名称
 WINDOW_NAME = 'Simple Bounding Box Labeling Tool'
 # 定义画面刷新帧率
-FPS = 3
+FPS = 10
 # 定义支持的图像格式
 SUPPORTED_FORMATS = ['jpg', 'jpeg', 'png']
 # 定义默认物体框的名字为Object，颜色为蓝色，当没有用户自定义物体时，使用该物体
@@ -61,7 +61,7 @@ KEY_DOWN = 115
 KEY_LEFT = 97
 KEY_RIGHT = 100
 KEY_DELETE = 255
-KEY_EXIT = 27
+KEY_EXIT =  96
 # 空键用于默认循环
 KEY_EMPTY = 0
 get_bbox_name = 'bbox/{}.bbox'.format
@@ -94,7 +94,7 @@ class SimpleBBoxLabeling:
         print(len(os.listdir(self._data_dir)))
         imagefiles = [x for x in os.listdir(self._data_dir) if x[x.rfind('.') + 1:].lower() in SUPPORTED_FORMATS]
         print(len(imagefiles))
-        labeled = [x for x in imagefiles if os.path.exists(os.path.join('./superJumbo', get_bbox_name(x)))]
+        labeled = [x for x in imagefiles if os.path.exists(os.path.join(self._data_dir, get_bbox_name(x)))]
         print(len(labeled))
         to_be_labeled = [x for x in imagefiles if x not in labeled]
         print(len(to_be_labeled))
@@ -245,7 +245,7 @@ class SimpleBBoxLabeling:
         # 定义每次循环的持续时间
         delay = int(1000 / FPS)
 
-        # 只要没有按下Delete键，就持续循环
+        # 只要没有按下Exit键，就持续循环
         while key != KEY_EXIT:
             # 上下方向键选择当前标注物体
             if key == KEY_UP:
@@ -299,7 +299,7 @@ class SimpleBBoxLabeling:
         print('Finished!')
         cv2.destroyAllWindows()
         #如果退出程序，需要对当前文件进行保存
-        self.export_bbox(os.sep.join([os.path.join('./superJumbo','bbox'), get_bbox_name(filename)]), self._bboxes)
+        self.export_bbox(os.sep.join([self._data_dir, get_bbox_name(filename)]), self._bboxes)
         print('Labels updated!')         
 
 # tkinter是Python内置的简单GUI库，实现打开文件夹、确认删除等操作十分方便
@@ -310,19 +310,19 @@ from tkinter.filedialog import askdirectory
 from PIL import Image
  
 def crop_imgs():
-    dir_with_images = './superJumbo/bbox'
+    dir_with_images = './superJumbo/12/bbox'
     bboxs = os.listdir(dir_with_images)
     print(len(bboxs))
     for bbox in tqdm(bboxs):
         print(bbox)
-        name = './superJumbo/'+bbox[:-5]
-        if not os.path.exists(name):
-            os.remove(os.path.join('./superJumbo/bbox',bbox))
-            continue
+        name = './superJumbo/12/' + bbox[:-5]
+        # if not os.path.exists(name):
+        #     os.remove(os.path.join(dir_with_images,bbox))
+        #     continue
         img = Image.open(name)
         print(img.size)
         bboxes = []
-        with open('./superJumbo/bbox/'+bbox, 'r') as f:
+        with open(os.path.join(dir_with_images,bbox), 'r') as f:
             line = f.readline().rstrip()
             while line:
                 bboxes.append(eval(line))
@@ -334,12 +334,12 @@ def crop_imgs():
             cropped = img.crop((sites[1][0][0], sites[1][0][1], sites[1][1][0], sites[1][1][1]))  # (left, upper, right, lower)
             print(name)
             cropped = cropped.convert('RGB')
-            cropped.save("./superJumbo/parts/" + bbox[:-9]+ '-part' + str(cnt)  + '.jpg')
+            cropped.save("./superJumbo/12/parts/" + bbox[:-9]+ '-part' + str(cnt)  + '.jpg')
             cnt += 1
 
 if __name__ == '__main__':
     # dir_with_images = askdirectory(title='Where is the images?')
-    # dir_with_images = './superJumbo'
+    # dir_with_images = './superJumbo/12'
     # labeling_task = SimpleBBoxLabeling(dir_with_images)
     # labeling_task.start()
 
