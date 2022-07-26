@@ -339,11 +339,11 @@ def crop_imgs():
 
 if __name__ == '__main__':
     # dir_with_images = askdirectory(title='Where is the images?')
-    # dir_with_images = './superJumbo'
-    # labeling_task = SimpleBBoxLabeling(dir_with_images)
-    # labeling_task.start()
+    dir_with_images = './superJumbo/09'
+    labeling_task = SimpleBBoxLabeling(dir_with_images)
+    labeling_task.start()
 
-    crop_imgs()
+    # crop_imgs()
 
     # test
     # img = cv2.imread('/home/wanghk/code/yahoo_spider/superJumbo/9a5b4b12-f451-52d5-bf11-13a9d01dac6d.jpg')
