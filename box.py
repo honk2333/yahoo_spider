@@ -61,7 +61,9 @@ KEY_DOWN = 115
 KEY_LEFT = 97
 KEY_RIGHT = 100
 KEY_DELETE = 255
-KEY_EXIT =  96
+KEY_EXIT =  27
+# KEY_EXIT =  96
+
 # 空键用于默认循环
 KEY_EMPTY = 0
 get_bbox_name = 'bbox/{}.bbox'.format
@@ -310,12 +312,12 @@ from tkinter.filedialog import askdirectory
 from PIL import Image
  
 def crop_imgs():
-    dir_with_images = './superJumbo/12/bbox'
+    dir_with_images = './nytimes_news/superJumbo/18/bbox'
     bboxs = os.listdir(dir_with_images)
     print(len(bboxs))
     for bbox in tqdm(bboxs):
         print(bbox)
-        name = './superJumbo/12/' + bbox[:-5]
+        name = './nytimes_news/superJumbo/18/' + bbox[:-5]
         # if not os.path.exists(name):
         #     os.remove(os.path.join(dir_with_images,bbox))
         #     continue
@@ -334,22 +336,17 @@ def crop_imgs():
             cropped = img.crop((sites[1][0][0], sites[1][0][1], sites[1][1][0], sites[1][1][1]))  # (left, upper, right, lower)
             print(name)
             cropped = cropped.convert('RGB')
-            cropped.save("./superJumbo/12/parts/" + bbox[:-9]+ '-part' + str(cnt)  + '.jpg')
+            cropped.save("./nytimes_news/superJumbo/18/parts/" + bbox[:-9]+ '-part' + str(cnt)  + '.jpg')
             cnt += 1
 
 if __name__ == '__main__':
     # dir_with_images = askdirectory(title='Where is the images?')
-<<<<<<< HEAD
-    # dir_with_images = './superJumbo/12'
+    
+    # dir_with_images = './nytimes_news/superJumbo/18'
     # labeling_task = SimpleBBoxLabeling(dir_with_images)
     # labeling_task.start()
-=======
-    dir_with_images = './superJumbo/09'
-    labeling_task = SimpleBBoxLabeling(dir_with_images)
-    labeling_task.start()
->>>>>>> 4a96c0e046f18d9a43c5942739e131a89e0eda4e
 
-    # crop_imgs()
+    crop_imgs()
 
     # test
     # img = cv2.imread('/home/wanghk/code/yahoo_spider/superJumbo/9a5b4b12-f451-52d5-bf11-13a9d01dac6d.jpg')
