@@ -1,6 +1,6 @@
 *.json
-images/
-images2/
+*images/
+*images2/
 *.png
 *.jpg
 *.html
