@@ -5,6 +5,5 @@
 *.jpg
 *.html
 superJumbo/
-filtered/
+data/
 datasets/
-tmp/

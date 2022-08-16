@@ -55,17 +55,27 @@ DEFAULT_COLOR = {'object': (255, 0, 0) }
 COLOR_GRAY = (192, 192, 192)
 # 在图像下方多处BAR_HEIGHT的区域，用于显示信息
 BAR_HEIGHT = 16
+# linux
 # 上下左右,DELETE键对应的cv2.waitKey()函数的返回值
 KEY_UP = 119
 KEY_DOWN = 115
 KEY_LEFT = 97
 KEY_RIGHT = 100
 KEY_DELETE = 255
-KEY_EXIT =  27
-# KEY_EXIT =  96
-
-# 空键用于默认循环
+# KEY_EXIT =  27
+KEY_EXIT = 96 
 KEY_EMPTY = 0
+
+
+# win
+# KEY_UP = 119
+# KEY_DOWN = 115
+# KEY_LEFT = 97
+# KEY_RIGHT = 100
+# KEY_DELETE = 0
+# KEY_EXIT =  27
+# KEY_EMPTY = 32
+
 get_bbox_name = 'bbox/{}.bbox'.format
 # def get_bbox_name(x):
 #     print('/bbox' + x[x.rfind('/'):] + '.bbox')
@@ -122,11 +132,13 @@ class SimpleBBoxLabeling:
         # 实时更新右下角坐标
         elif event == cv2.EVENT_MOUSEMOVE:
             self._pt1 = (x, y)
-        # 按下鼠标右键删除最近画好的框
-        elif event == cv2.EVENT_MBUTTONUP:
+        # 按下鼠标中键删除最近画好的框
+        elif event == cv2.EVENT_MBUTTONDBLCLK:
             # print(self._bboxes)
             if self._bboxes:
                 self._bboxes.pop()
+        elif event == cv2.EVENT_MBUTTONUP and (flags&cv2.EVENT_FLAG_CTRLKEY):
+            self._bboxes.append((self._cur_label, ((0,0), (10000,10000))))
 
     # 清除所有标注框和当前状态
     def _clean_bbox(self):
@@ -149,6 +161,8 @@ class SimpleBBoxLabeling:
         cv2.putText(canvas, msg, (1, h+12), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 0), 1)
         # 画出已经标好的框和对应名字
         for label, (bpt0, bpt1) in self._bboxes:
+            if bpt1[0] > w or bpt1[1] > h:
+               bpt1 = (w,h)
             label_color = self.label_colors[label] if label in self.label_colors else COLOR_GRAY
             cv2.rectangle(canvas, bpt0, bpt1, label_color, thickness=2)
             cv2.putText(canvas, label, (bpt0[0]+3, bpt0[1]+15), cv2.FONT_HERSHEY_SIMPLEX, 0.5, label_color, 2)
@@ -240,6 +254,7 @@ class SimpleBBoxLabeling:
         n_labels = len(labels)
 
         # 定义窗口和鼠标回调
+        # img = None
         cv2.namedWindow(self.window_name)
         cv2.setMouseCallback(self.window_name, self._mouse_ops)
         key = KEY_EMPTY
@@ -268,6 +283,7 @@ class SimpleBBoxLabeling:
                 self._index -= 1
                 if self._index < 0:
                     self._index = 0
+            # elif key = KEY_SAVE:
             elif key == KEY_RIGHT:
                 # 已经到了最后一张图片的就不需要清空上一张
                 if self._index < len(self._filelist) - 1:
@@ -311,18 +327,19 @@ from tkinter.filedialog import askdirectory
 
 from PIL import Image
  
-def crop_imgs():
-    dir_with_images = './nytimes_news/superJumbo/18/bbox'
+def crop_imgs(dirid):
+    dir_with_images = './nytimes_news/superJumbo/'+str(dirid)+'/bbox'
     bboxs = os.listdir(dir_with_images)
     print(len(bboxs))
     for bbox in tqdm(bboxs):
         print(bbox)
-        name = './nytimes_news/superJumbo/18/' + bbox[:-5]
-        # if not os.path.exists(name):
-        #     os.remove(os.path.join(dir_with_images,bbox))
-        #     continue
+        name = './nytimes_news/superJumbo/'+str(dirid)+'/' + bbox[:-5]
+        if not os.path.exists(name):
+            # os.remove(os.path.join(dir_with_images,bbox))
+            continue
         img = Image.open(name)
-        print(img.size)
+        w, h = img.size
+        print(w,h)
         bboxes = []
         with open(os.path.join(dir_with_images,bbox), 'r') as f:
             line = f.readline().rstrip()
@@ -333,20 +350,24 @@ def crop_imgs():
         cnt = 0
         for sites in bboxes:
             print(sites[1])
-            cropped = img.crop((sites[1][0][0], sites[1][0][1], sites[1][1][0], sites[1][1][1]))  # (left, upper, right, lower)
-            print(name)
-            cropped = cropped.convert('RGB')
-            cropped.save("./nytimes_news/superJumbo/18/parts/" + bbox[:-9]+ '-part' + str(cnt)  + '.jpg')
-            cnt += 1
-
+            try:
+                cropped = img.crop((sites[1][0][0], sites[1][0][1], min(sites[1][1][0],w), min(sites[1][1][1],h)))  # (left, upper, right, lower)
+                print(name)
+                cropped = cropped.convert('RGB')
+                cropped.save("./nytimes_news/superJumbo/"+str(dirid)+"/parts/" + bbox[:-9]+ '-part' + str(cnt)  + '.jpg')
+                cnt += 1
+            except ValueError:
+                continue
+            
 if __name__ == '__main__':
     # dir_with_images = askdirectory(title='Where is the images?')
-    
-    # dir_with_images = './nytimes_news/superJumbo/18'
+    dirid = 25
+
+    # dir_with_images = './nytimes_news/superJumbo/' + str(dirid)
     # labeling_task = SimpleBBoxLabeling(dir_with_images)
     # labeling_task.start()
 
-    crop_imgs()
+    crop_imgs(dirid)
 
     # test
     # img = cv2.imread('/home/wanghk/code/yahoo_spider/superJumbo/9a5b4b12-f451-52d5-bf11-13a9d01dac6d.jpg')
