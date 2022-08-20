@@ -47,16 +47,21 @@ def nytimes_news(year, month):
         # print([0].keys())
         # for pic in article['multimedia']:
         #     print(pic)
-        record = {
-                'title':article['headline']['print_headline'], 
-                'summary': article['abstract'],
-                'url':article['web_url'], 
-                'category': article['section_name'], 
-                'image':{'heigh':article['multimedia'][0]['height'],'width':article['multimedia'][0]['width'],'url':'https://www.nytimes.com/'+article['multimedia'][0]['url']} 
-                }
-        # md5.update(record['title'].encode(encoding='utf-8'))
-        # id = md5.hexdigest()
-        tmp.update({id:record})
+        try:
+            record = {
+                    # 'title':article['headline']['print_headline'], 
+                    'title':article['headline']['print_headline'] if len(article['headline']['print_headline'])>len(article['headline']['main']) else article['headline']['main'], 
+                    'summary': article['abstract'],
+                    'url':article['web_url'], 
+                    'category': article['section_name'], 
+                    # 'image':{'heigh':article['multimedia'][0]['height'],'width':article['multimedia'][0]['width'],'url':'https://www.nytimes.com/'+article['multimedia'][0]['url']} 
+                    'image':{'heigh':article['multimedia'][2]['height'],'width':article['multimedia'][2]['width'],'url':'https://www.nytimes.com/'+article['multimedia'][2]['url']} 
+                    }
+            # md5.update(record['title'].encode(encoding='utf-8'))
+            # id = md5.hexdigest()
+            tmp.update({id:record})
+        except:
+            continue
         # id += 1
     records.update(tmp)
     print('更新后总新闻数：', len(records))
@@ -94,7 +99,7 @@ def nytimes_new_2():
 
 
 if __name__ == '__main__':
-    # year = 2022
-    # for month in range(1,6):
-    #     nytimes_news(year,month)
-    nytimes_new_2()
+    year = 2015
+    for month in range(1,13):
+        nytimes_news(year,month)
+    # nytimes_new_2()
